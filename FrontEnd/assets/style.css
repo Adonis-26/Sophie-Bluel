@@ -127,11 +127,28 @@ li:hover {
 }
 .div-container{
 	display: flex;
-	width: 70%;
-	justify-content: space-around;
-	margin: 0 auto;
+	width: 100%;
+	justify-content: center;
+	margin: 30px;
+
 }
 
+.div-container > *{ /*pour chaque div du filtre je veux un:*/
+	padding: 10px 20px;
+	border: 2px solid #1D6154;
+	border-radius: 25px;
+	margin: 5px;
+	font-family: 'Syne';
+    font-weight: 700;
+    font-size: 16px;
+	color: #1D6154;
+	cursor: pointer;
+
+}
+.div-container > *:hover {
+	background-color: #1D6154;
+	color: white;
+}
 .gallery {
 	width: 100%;
 	display: grid;
