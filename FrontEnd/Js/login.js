@@ -20,16 +20,17 @@ async function entranceLogin(event) {
     });
     console.log(response); // quand la reponse est bonne on a un status de 200 sinon status 401
 
+    // message d'erreur page logIn
     if (response.status != 200) {
         const errorMessage =  document.createElement("div");
         errorMessage.className = 'error';
         errorMessage.innerHTML = 'Email ou Mot de passe incorrect';
         document.querySelector('form').prepend(errorMessage);
-    }
-    // Afficher les informations utilisateur dans les logs
-    console.log("Email :", user.email);
-    
-    
+    };
+    let result = await response.json();
+    const token = result.token;
+    sessionStorage.setItem("authToken", token);// Stock le token
+    console.log(token); 
 }
 
 
