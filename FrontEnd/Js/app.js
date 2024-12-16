@@ -52,7 +52,7 @@ async function getCategories() {
     //console.log(json);
     for (let i = 0; i < json.length; i++) {
       FilterButton(json[i]);
-      console.log(json[i]);
+      
 
     }
   } catch (error) {
@@ -71,3 +71,14 @@ function FilterButton(data) {
   document.querySelector(".div-container").append(div);
 }
 document.querySelector(".Tous").addEventListener("click", () => getWorks());
+
+function displayAddBanner (){
+  if(sessionStorage.authToken){
+    console.log('ok');
+    const editBanner = document.createElement('div');
+    editBanner.className = 'edit',
+    editBanner.innerHTML= '<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>'
+    document.body.prepend(editBanner);
+  }
+};
+displayAddBanner();

@@ -26,13 +26,16 @@ async function entranceLogin(event) {
         errorMessage.className = 'error';
         errorMessage.innerHTML = 'Email ou Mot de passe incorrect';
         document.querySelector('form').prepend(errorMessage);
-    };
-    let result = await response.json();
-    const token = result.token;
-    sessionStorage.setItem("authToken", token);// Stock le token
-    console.log(token); 
+    }
+    else {
+        let result = await response.json();
+        const token = result.token;
+        sessionStorage.setItem("authToken", token);// Stock le token
+        console.log(token); 
     
-    window.location.href = ("index.html"); // redirige vers la parge d'accueil
+    window.location.href = ("index.html"); // redirige vers la parge d'accueil    
+    }
+   
 }
 
 

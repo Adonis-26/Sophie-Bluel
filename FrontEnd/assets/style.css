@@ -250,6 +250,8 @@ li:hover {
 	display: flex;
 	justify-content: center;
 	font-family: 'Syne';
+	height: 30px;
+	align-items: center;
 
 }
 .Mentions{
@@ -291,8 +293,4 @@ footer nav ul {
 	left: 0;
 	top: 0;
 	width: 100vw;
-}
-
-i{
-	width: px;
 }
