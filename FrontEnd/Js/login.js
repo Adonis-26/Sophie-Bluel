@@ -31,6 +31,8 @@ async function entranceLogin(event) {
     const token = result.token;
     sessionStorage.setItem("authToken", token);// Stock le token
     console.log(token); 
+    
+    window.location.href = ("index.html");
 }
 
 
