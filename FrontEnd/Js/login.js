@@ -32,7 +32,7 @@ async function entranceLogin(event) {
     sessionStorage.setItem("authToken", token);// Stock le token
     console.log(token); 
     
-    window.location.href = ("index.html");
+    window.location.href = ("index.html"); // redirige vers la parge d'accueil
 }
 
 
