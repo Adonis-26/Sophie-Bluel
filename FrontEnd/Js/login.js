@@ -11,25 +11,25 @@ async function entranceLogin(event) {
         password: document.getElementById('password').value,
     };
 
-    try {
-        let response = await fetch(loginApi, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-        });
+    let response = await fetch(loginApi, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    body: JSON.stringify(user),
+    });
+    console.log(response); // quand la reponse est bonne on a un status de 200 sinon status 401
 
-        // Extraction du résultat JSON
-        let result = await response.json();
-        console.log("Résultat de l'API :", result);
-
-    } catch (error) {
-        console.error("Erreur lors de la connexion :", error);
+    if (response.status != 200) {
+        const errorMessage =  document.createElement("div");
+        errorMessage.className = 'error';
+        errorMessage.innerHTML = 'Email ou Mot de passe incorrect';
+        document.querySelector('form').prepend(errorMessage);
     }
     // Afficher les informations utilisateur dans les logs
     console.log("Email :", user.email);
-    console.log("Mot de passe :", user.password);
+    
+    
 }
 
 

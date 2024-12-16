@@ -240,7 +240,15 @@ li:hover {
 	font-size: 15px;
 	font-weight: 500;
 	text-decoration:underline;
-	
+}
+
+.error{
+	background-color: red;
+	color: white;
+	display: flex;
+	justify-content: center;
+	font-family: 'Syne';
+
 }
 .Mentions{
 	width: 100%;
