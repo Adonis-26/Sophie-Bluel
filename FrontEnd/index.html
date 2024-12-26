@@ -13,13 +13,21 @@
 </head>
 <body>
 
+	<aside class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal">
+		<div class="modal-wrapper ">
+			<div class="fermer"><p>X</p></div>
+			<p title="titlemodal" class="gallery-photo"> Galerie photo</p>
+			<div class="photo-modal"></div>
+		</div>
+	</aside>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
 			<li><a href="#portfolio"> projets</a></li>
 			<li><a href="#contact"> contact</a></li>
-			<li><a href="login.html">login</a></li>
+			<li><a href="login.html" id="logIn">login</a></li>
+			<li><a href="login.html" id="logout">logout</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -37,7 +45,11 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="modifProjet">
+			<h2 id="projets" >Mes Projets</h2>
+			<a href="#modal" class="js-modal"><i class="fa-regular fa-pen-to-square"></i> Mode édition</a>
+		</div>
+		
 		<div class="div-container">
 			<div class="Tous">Tous</div>
 		</div>

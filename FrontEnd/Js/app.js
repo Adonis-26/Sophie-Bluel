@@ -72,13 +72,44 @@ function FilterButton(data) {
 }
 document.querySelector(".Tous").addEventListener("click", () => getWorks());
 
+// permet d'afficher les éléments quand je suis logué 
 function displayAddBanner (){
+  const aLink = document.querySelector(".js-modal");
+  const logOut = document.getElementById("logout");
   if(sessionStorage.authToken){
-    console.log('ok');
     const editBanner = document.createElement('div');
-    editBanner.className = 'edit',
-    editBanner.innerHTML= '<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>'
+    editBanner.className = 'edit';
+    //lien edit avec le modal
+    editBanner.innerHTML= '<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>';
     document.body.prepend(editBanner);
+    const hiddenFilter = document.querySelector(".div-container"); // div-container = bloc-filtre
+    const logIn = document.getElementById("logIn");
+    logIn.style.display = "none";
+    logOut.style.visibility = "visible";
+    hiddenFilter.style.display = "none"; 
+    aLink.style.visibility = "visible";
+  } else {
+    logIn.style.visibility = "visible";
+    logOut.style.display = "none";
+    aLink.style.visibility = "hidden";
   }
+ 
+  // retirer la token quand je click
+  logOut.addEventListener("click", e => {
+    sessionStorage.clear();
+  })
 };
 displayAddBanner();
+
+const modal = document.querySelector('.modal')
+modal.style.visibility = "hidden"
+
+const openModal = document.querySelector(".js-modal");
+openModal.addEventListener("click", () => {
+  modal.style.visibility = "visible"
+});
+
+const closeModal = document.querySelector(".fermer");
+closeModal.addEventListener("click", () => {
+    modal.style.visibility = "hidden"
+});
