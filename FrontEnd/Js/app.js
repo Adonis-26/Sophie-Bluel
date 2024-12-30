@@ -14,11 +14,13 @@ async function getWorks(filter) {
       const filtrer = json.filter((data) => data.categoryId === filter);
       for (let i = 0; i < filtrer.length; i++) {
         showFigure(filtrer[i]);
+        showFigureModal(json[i]);
       }
     }
     else {
       for (let i = 0; i < json.length; i++) {
         showFigure(json[i]);
+        showFigureModal(json[i]);
       }
     }
   } catch (error) {
@@ -35,7 +37,6 @@ function showFigure(data) {
   //afficher la galerie 
   document.querySelector(".gallery").append(figure);
 }
-
 //=========================================================================================
 
 //1.2 Réalisation du filtre des travaux : Ajout des filtres pour afficher les travaux par catégorie
@@ -113,3 +114,12 @@ const closeModal = document.querySelector(".fermer");
 closeModal.addEventListener("click", () => {
     modal.style.visibility = "hidden"
 });
+
+//afficher les figure modal
+function showFigureModal(data) {
+  const figure = document.createElement("figure");
+  figure.innerHTML = `<img src=${data.imageUrl} alt=${data.title}>
+				<figcaption>${data.title}</figcaption>`;
+  //afficher la galerie 
+  document.querySelector(".gallery-modal").append(figure);
+}

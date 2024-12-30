@@ -25,9 +25,7 @@ async function entranceLogin(event) {
         const errorMessage =  document.createElement("div");
         errorMessage.className = 'error';
         errorMessage.innerHTML = 'Email ou Mot de passe incorrect';
-        document.querySelector('form').prepend(errorMessage);
-        
-        
+        document.querySelector('form').prepend(errorMessage); // créer un espace pour accueillir le message d'erreur 
     }
     else {
         let result = await response.json();
