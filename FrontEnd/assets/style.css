@@ -362,7 +362,6 @@ footer nav ul {
 	justify-content: center;
 	margin-left: 60px;
 	margin-right: 60px;
-
 }
 
 .gallery-modal img {
@@ -374,35 +373,23 @@ hr{
 	margin: 30px 60px 40px;
 }
 
+.image-container {
+    position: relative; /* Permet de positionner des éléments enfants en absolu */
+}
+
+.image-container .delete-icon {
+    position: absolute; 
+    top: 3px; 
+    right: 11px; 
+    font-size: 10px;
+    cursor: pointer; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    border-radius: 18%; 
+    padding: 5px; 
+}
+
 .modal-wrapper input{
 	display: flex;
 	border: none;
 	height: 30px;
-}
-
-.image-container {
-    position: relative; /* Permet de positionner des éléments enfants en absolu */
-    display: inline-block; /* Adapte la taille du conteneur à l'image */
-}
-
-.image-container img {
-    display: block; /* Retire les marges blanches autour de l'image */
-   
-    height: auto; /* Maintient le ratio de l'image */
-}
-
-.image-container .delete-icon {
-    position: absolute; /* Position absolue par rapport au conteneur parent */
-    top: 3px; /* Distance par rapport au haut du conteneur */
-    right: 11px; /* Distance par rapport au bord droit */
-    font-size: 10px; /* Taille de l'icône */
-    cursor: pointer; /* Change le curseur pour indiquer qu'on peut cliquer */
-    background-color: rgba(0, 0, 0, 0.5); /* Optionnel : fond semi-transparent */
-    border-radius: 18%; /* Optionnel : rend l'icône circulaire */
-    padding: 5px; /* Optionnel : ajoute de l'espace autour de l'icône */
-}
-
-.image-container figcaption {
-    text-align: center; /* Centrer le texte */
-    margin-top: 10px; /* Ajoute de l'espace entre l'image et le texte */
 }

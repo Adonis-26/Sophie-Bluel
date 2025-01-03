@@ -23,6 +23,10 @@ async function getWorks(filter) {
         showFigureModal(json[i]);
       }
     }
+    //delete img modall
+    const  trashIcon = document.querySelectorAll(".fa-trash-can");
+    trashIcon.forEach((e) => 
+      e.addEventListener('click', (event) => deleteWorks(event))); 
   } catch (error) {
     console.error(error.message);
   }
@@ -53,8 +57,6 @@ async function getCategories() {
     //console.log(json);
     for (let i = 0; i < json.length; i++) {
       FilterButton(json[i]);
-      
-
     }
   } catch (error) {
     console.error(error.message);
@@ -120,10 +122,37 @@ function showFigureModal(data) {
   const figure = document.createElement("figure");
   figure.innerHTML = `<div class="image-container">
     <img src="${data.imageUrl}" alt="${data.title}">
-    <i class="fa-solid fa-trash-can delete-icon" style="color: #f7f9fc;" title="Supprimer"></i>
-    
+    <i id=${data.id} class="fa-solid fa-trash-can delete-icon" style="color: #f7f9fc;" title="Supprimer"></i>
 </div>`;
 
   //afficher la galerie 
   document.querySelector(".gallery-modal").append(figure);
+}
+
+async function deleteWorks(event) {
+  const id = event.srcElement.id;
+  const deleteApi = "http://localhost:5678/api/works/";
+
+  const token = sessionStorage.authToken;
+  
+
+  let response = await fetch(deleteApi + id, {
+    method: "DELETE",
+    headers: {
+      "Authorization": "Bearer" + token,
+      },
+      body: JSON.stringify(user),
+    });
+  
+      // message d'erreur page logIn
+      if (response.status != 401 || response.status == 500) {
+          const errorMessage =  document.createElement("div");
+          errorMessage.className = 'error';
+         
+      }
+      else {
+          let result = await response.json();
+          console.log(result);
+      }
+     
 }
