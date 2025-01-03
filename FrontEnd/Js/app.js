@@ -118,8 +118,12 @@ closeModal.addEventListener("click", () => {
 //afficher les figure modal
 function showFigureModal(data) {
   const figure = document.createElement("figure");
-  figure.innerHTML = `<img src=${data.imageUrl} alt=${data.title}>
-				<figcaption></figcaption>`;
+  figure.innerHTML = `<div class="image-container">
+    <img src="${data.imageUrl}" alt="${data.title}">
+    <i class="fa-solid fa-trash-can delete-icon" style="color: #f7f9fc;" title="Supprimer"></i>
+    
+</div>`;
+
   //afficher la galerie 
   document.querySelector(".gallery-modal").append(figure);
 }
