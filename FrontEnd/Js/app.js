@@ -119,7 +119,7 @@ closeModal.addEventListener("click", () => {
 function showFigureModal(data) {
   const figure = document.createElement("figure");
   figure.innerHTML = `<img src=${data.imageUrl} alt=${data.title}>
-				<figcaption>${data.title}</figcaption>`;
+				<figcaption></figcaption>`;
   //afficher la galerie 
   document.querySelector(".gallery-modal").append(figure);
 }
