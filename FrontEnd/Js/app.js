@@ -24,9 +24,9 @@ async function getWorks(filter) {
       }
     }
     //delete img modall
-    const  trashIcon = document.querySelectorAll(".fa-trash-can");
-    trashIcon.forEach((e) => 
-      e.addEventListener('click', (event) => deleteWorks(event))); 
+    const trashIcon = document.querySelectorAll(".fa-trash-can");
+    trashIcon.forEach((e) =>
+      e.addEventListener('click', (event) => deleteWorks(event)));
   } catch (error) {
     console.error(error.message);
   }
@@ -37,7 +37,7 @@ getWorks();
 function showFigure(data) {
   const figure = document.createElement("figure");
   figure.innerHTML = `<img src=${data.imageUrl} alt=${data.title}>
-				<figcaption>${data.title}</figcaption>`;
+    <figcaption>${data.title}</figcaption>`;
   //afficher la galerie 
   document.querySelector(".gallery").append(figure);
 }
@@ -76,27 +76,27 @@ function FilterButton(data) {
 document.querySelector(".Tous").addEventListener("click", () => getWorks());
 
 // permet d'afficher les éléments quand je suis logué 
-function displayAddBanner (){
+function displayAddBanner() {
   const aLink = document.querySelector(".js-modal");
   const logOut = document.getElementById("logout");
-  if(sessionStorage.authToken){
+  if (sessionStorage.authToken) {
     const editBanner = document.createElement('div');
     editBanner.className = 'edit';
     //lien edit avec le modal
-    editBanner.innerHTML= '<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>';
+    editBanner.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>';
     document.body.prepend(editBanner);
     const hiddenFilter = document.querySelector(".div-container"); // div-container = bloc-filtre
     const logIn = document.getElementById("logIn");
     logIn.style.display = "none";
     logOut.style.visibility = "visible";
-    hiddenFilter.style.display = "none"; 
+    hiddenFilter.style.display = "none";
     aLink.style.visibility = "visible";
   } else {
     logIn.style.visibility = "visible";
     logOut.style.display = "none";
     aLink.style.visibility = "hidden";
   }
- 
+
   // retirer la token quand je click
   logOut.addEventListener("click", e => {
     sessionStorage.clear();
@@ -114,17 +114,16 @@ openModal.addEventListener("click", () => {
 
 const closeModal = document.querySelector(".fermer");
 closeModal.addEventListener("click", () => {
-    modal.style.visibility = "hidden"
+  modal.style.visibility = "hidden"
 });
 
 //afficher les figure modal
 function showFigureModal(data) {
   const figure = document.createElement("figure");
   figure.innerHTML = `<div class="image-container">
-    <img src="${data.imageUrl}" alt="${data.title}">
-    <i id=${data.id} class="fa-solid fa-trash-can delete-icon" style="color: #f7f9fc;" title="Supprimer"></i>
+<img src="${data.imageUrl}" alt="${data.title}">
+<i id=${data.id} class="fa-solid fa-trash-can delete-icon" style="color: #f7f9fc;" title="Supprimer"></i>
 </div>`;
-
   //afficher la galerie 
   document.querySelector(".gallery-modal").append(figure);
 }
@@ -132,27 +131,21 @@ function showFigureModal(data) {
 async function deleteWorks(event) {
   const id = event.srcElement.id;
   const deleteApi = "http://localhost:5678/api/works/";
-
   const token = sessionStorage.authToken;
-  
-
   let response = await fetch(deleteApi + id, {
     method: "DELETE",
     headers: {
-      "Authorization": "Bearer" + token,
-      },
-      body: JSON.stringify(user),
-    });
-  
-      // message d'erreur page logIn
-      if (response.status != 401 || response.status == 500) {
-          const errorMessage =  document.createElement("div");
-          errorMessage.className = 'error';
-         
-      }
-      else {
-          let result = await response.json();
-          console.log(result);
-      }
-     
+      Authorization: "Bearer " + token,
+    },
+  });
+
+  if (response.status == 401 || response.status == 500) {
+    const errorMessage = document.createElement("div");
+    errorMessage.className = 'error-login';
+
+  }
+  else {
+    console.log(result);
+  }
+
 }
