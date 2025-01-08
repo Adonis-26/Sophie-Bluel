@@ -56,7 +56,7 @@ async function getCategories() {
     const json = await response.json();
     //console.log(json);
     for (let i = 0; i < json.length; i++) {
-      FilterButton(json[i]);
+      filterButton(json[i]);
     }
   } catch (error) {
     console.error(error.message);
@@ -66,7 +66,7 @@ async function getCategories() {
 getCategories();
 
 // recuperer mes data sur l'api (noms de filtre)
-function FilterButton(data) {
+function filterButton(data) {
   const div = document.createElement("div");// creation mes 4 boutons de filtre
   div.className = data.id; // nom de class des filtres 
   div.addEventListener("click", () => getWorks(data.id)); // je vois mes objets 1, 2, 3
@@ -105,16 +105,16 @@ function displayAddBanner() {
 displayAddBanner();
 
 const modal = document.querySelector('.modal')
-modal.style.visibility = "hidden"
+  modal.style.visibility = "hidden"
 
 const openModal = document.querySelector(".js-modal");
-openModal.addEventListener("click", () => {
+  openModal.addEventListener("click", () => {
   modal.style.visibility = "visible"
 });
 
-const closeModal = document.querySelector(".fermer");
-closeModal.addEventListener("click", () => {
-  modal.style.visibility = "hidden"
+const closeModal = document.querySelector(".fa-xmark");
+  closeModal.addEventListener("click", () => {
+    modal.style.visibility = "hidden"
 });
 
 //afficher les figure modal
@@ -128,6 +128,7 @@ function showFigureModal(data) {
   document.querySelector(".gallery-modal").append(figure);
 }
 
+
 async function deleteWorks(event) {
   const id = event.srcElement.id;
   const deleteApi = "http://localhost:5678/api/works/";
@@ -139,13 +140,44 @@ async function deleteWorks(event) {
     },
   });
 
-  if (response.status == 401 || response.status == 500) {
-    const errorMessage = document.createElement("div");
-    errorMessage.className = 'error-login';
-
+  if (response.ok){
+    window.location.reload(); // la modale se fermer pouquoi ???? vois avec mentor
   }
-  else {
-    console.log(result);
-  }
-
 }
+ 
+// ajouter une photo 
+
+const switchModal = function () {
+document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer">
+<i class="fa-solid fa-arrow-left"></i><i class="fa-solid fa-xmark"></i></div>
+	<p title="titlemodal" class="gallery-photo"> Ajout photo</p>
+		<div class="gallery-modal">
+      <div class="addPhotoForm">
+		      <form action="#" method="post">
+            <label for="title">Titre</label>
+            <input type="text" name="title" id="title" />
+		      	<label for="category">Catégorie</label>
+			      <input type="category" name="category" id="category">
+		      </form>
+			  </div>
+      </div>
+			<hr/>
+			<input class="addPhoto" type="submit" value="Valider">`
+
+const backButton = document.querySelector(".fa-arrow-left");
+  const openModal = document.querySelector(".js-modal");
+    backButton.addEventListener("click", () => {
+    modal.style.visibility = "visible";
+});
+
+const closeModal = document.querySelector(".fa-xmark");
+  closeModal.addEventListener("click", () => {
+  modal.style.visibility = "hidden",
+  location.reload();
+});
+}
+const addPhotoButton = document.querySelector(".addPhoto");
+console.log(addPhotoButton);
+addPhotoButton.addEventListener('click',switchModal);
+
+
