@@ -151,23 +151,31 @@ const switchModal = function () {
 document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer">
 <i class="fa-solid fa-arrow-left"></i><i class="fa-solid fa-xmark"></i></div>
 	<p title="titlemodal" class="gallery-photo"> Ajout photo</p>
-		<div class="gallery-modal">
-      <div class="addPhotoForm">
-		      <form action="#" method="post">
-            <label for="title">Titre</label>
-            <input type="text" name="title" id="title" />
-		      	<label for="category">Catégorie</label>
-			      <input type="category" name="category" id="category">
-		      </form>
-			  </div>
+    <div class="center"> 
+      <div class="blue">
+        <i class="fa-regular fa-image"></i>
+        <input class="plusPhoto" type="submit" value="+ Ajouter photo">
+        <p class="format">jpg, png : 4mo max</p>
       </div>
-			<hr/>
-			<input class="addPhoto" type="submit" value="Valider">`
+
+              <div class="addPhotoForm">
+              <form action="#" method="post">
+                <label for="title">Titre</label>
+                <input type="text" name="title" id="title" />
+                <label for="category">Catégorie</label>
+                <input type="category" name="category" id="category">
+              </form>
+              <hr/>
+            <input type="submit" value="Valider">
+            </div>
+      
+    </div>`
+			
 
 const backButton = document.querySelector(".fa-arrow-left");
   const openModal = document.querySelector(".js-modal");
     backButton.addEventListener("click", () => {
-    modal.style.visibility = "visible";
+    modal.style.visibility = "visible"
 });
 
 const closeModal = document.querySelector(".fa-xmark");
