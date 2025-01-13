@@ -140,9 +140,6 @@ async function deleteWorks(event) {
     },
   });
 
-  if (response.ok){
-    window.location.reload(); // la modale se fermer pouquoi ???? vois avec mentor
-  }
 }
  
 // ajouter une photo 
@@ -157,7 +154,6 @@ document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer">
         <input class="plusPhoto" type="submit" value="+ Ajouter photo">
         <p class="format">jpg, png : 4mo max</p>
       </div>
-
               <div class="addPhotoForm">
               <form action="#" method="post">
                 <label for="title">Titre</label>
@@ -168,9 +164,7 @@ document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer">
               <hr/>
             <input type="submit" value="Valider">
             </div>
-      
     </div>`
-			
 
 const backButton = document.querySelector(".fa-arrow-left");
   const openModal = document.querySelector(".js-modal");
@@ -180,8 +174,7 @@ const backButton = document.querySelector(".fa-arrow-left");
 
 const closeModal = document.querySelector(".fa-xmark");
   closeModal.addEventListener("click", () => {
-  modal.style.visibility = "hidden",
-  location.reload();
+  modal.style.visibility = "hidden"
 });
 }
 const addPhotoButton = document.querySelector(".addPhoto");
