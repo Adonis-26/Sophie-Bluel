@@ -151,7 +151,8 @@ const switchModal = function () {
     <div class="center"> 
       <div class="blue">
         <i class="fa-regular fa-image"></i>
-        <input class="plusPhoto" type="submit" value="+ Ajouter photo">
+        <label for="plusPhoto" class="formFile">+ Ajouter photo</label>
+        <input id="plusPhoto" type="file" accept ".jpg, .png">
         <p class="format">jpg, png : 4mo max</p>
       </div>
               <div class="addPhotoForm">
@@ -171,7 +172,7 @@ const switchModal = function () {
   backButton.addEventListener("click", () => {
     document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer"><i></i> <i class="fa-solid fa-xmark"></i></div>
 			<p title="titlemodal" class="gallery-photo"> Galerie photo</p>
-			<div class="gallery-modal swichGallery-modal"></div>
+			<div class="gallery-modal "></div>
 			<div class="addPhotoForm"></div>
 			<hr/>
 			<input class="addPhoto" type="submit" value="Ajouter une photo">`;
@@ -181,29 +182,31 @@ const switchModal = function () {
       .then(response => response.json())
       .then(data => {
         data.forEach(item => showFigureModal(item));
-
+        
         const closeModal = document.querySelector(".fa-xmark");
         closeModal.addEventListener("click", () => {
           modal.style.visibility = "hidden"
         });
+        // bouton ajoute photo
         const addPhotoButton = document.querySelector(".addPhoto");
         addPhotoButton.addEventListener('click', switchModal);
       });
-
+      
     const closeModal = document.querySelector(".fa-xmark");
     closeModal.addEventListener("click", () => {
       modal.style.visibility = "hidden"
     });
   });
 
-
+  // fermer la 2ème modale 
   const closeModal = document.querySelector(".fa-xmark");
   closeModal.addEventListener("click", () => {
-    modal.style.visibility = "hidden"
+  modal.style.visibility = "hidden"
+  
   });
-
+  
 }
-
+// bouton ajoute photo
 const addPhotoButton = document.querySelector(".addPhoto");
 addPhotoButton.addEventListener('click', switchModal);
 

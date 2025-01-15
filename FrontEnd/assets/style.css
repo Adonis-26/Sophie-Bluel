@@ -500,14 +500,17 @@ hr{
 	height: 169px;
 }
 
-.blue input {
+.blue .formFile {
 	margin: 8px;
 	background: #cbd6dc;
 	width: 170px;
 	height: 36px;
+	border-radius: 20px;
 	color: #306685;
 	font-family: 'Work Sans';
-	
+}
+.blue input {
+	display: none;
 }
 .fa-image{
 	margin-top: 30px;
@@ -522,3 +525,15 @@ hr{
 	color: #444444;
 }
 
+
+.formFile{
+	display: inline-block;
+  padding: 10px 20px;
+  background-color: #007BFF; /* Bleu */
+  color: #fff; /* Texte blanc */
+  border-radius: 5px; /* Coins arrondis */
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
