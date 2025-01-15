@@ -54,7 +54,6 @@ async function getCategories() {
       throw new Error(`Reponse status: ${response.status}`);
     }
     const json = await response.json();
-    //console.log(json);
     for (let i = 0; i < json.length; i++) {
       filterButton(json[i]);
     }
@@ -84,6 +83,7 @@ function displayAddBanner() {
     editBanner.className = 'edit';
     //lien edit avec le modal
     editBanner.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>';
+
     document.body.prepend(editBanner);
     const hiddenFilter = document.querySelector(".div-container"); // div-container = bloc-filtre
     const logIn = document.getElementById("logIn");
@@ -103,18 +103,18 @@ function displayAddBanner() {
   })
 };
 displayAddBanner();
-
+//cacher la modale
 const modal = document.querySelector('.modal')
-  modal.style.visibility = "hidden"
-
+modal.style.visibility = "hidden"
+// afficher la modale
 const openModal = document.querySelector(".js-modal");
-  openModal.addEventListener("click", () => {
+openModal.addEventListener("click", () => {
   modal.style.visibility = "visible"
 });
-
+// fermer la modale
 const closeModal = document.querySelector(".fa-xmark");
-  closeModal.addEventListener("click", () => {
-    modal.style.visibility = "hidden"
+closeModal.addEventListener("click", () => {
+  modal.style.visibility = "hidden"
 });
 
 //afficher les figure modal
@@ -128,11 +128,12 @@ function showFigureModal(data) {
   document.querySelector(".gallery-modal").append(figure);
 }
 
-
+// suppression éléments
 async function deleteWorks(event) {
-  const id = event.srcElement.id;
-  const deleteApi = "http://localhost:5678/api/works/";
   const token = sessionStorage.authToken;
+  const id = event.srcElement.id;
+  console.log("id")
+  const deleteApi = "http://localhost:5678/api/works/";
   let response = await fetch(deleteApi + id, {
     method: "DELETE",
     headers: {
@@ -140,12 +141,11 @@ async function deleteWorks(event) {
     },
   });
 
-}
- 
-// ajouter une photo 
+};
 
+// ajouter une photo dans la modale
 const switchModal = function () {
-document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer">
+  document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer">
 <i class="fa-solid fa-arrow-left"></i><i class="fa-solid fa-xmark"></i></div>
 	<p title="titlemodal" class="gallery-photo"> Ajout photo</p>
     <div class="center"> 
@@ -166,19 +166,44 @@ document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer">
             </div>
     </div>`
 
-const backButton = document.querySelector(".fa-arrow-left");
+  const backButton = document.querySelector(".fa-arrow-left");
   const openModal = document.querySelector(".js-modal");
-    backButton.addEventListener("click", () => {
-    modal.style.visibility = "visible"
-});
+  backButton.addEventListener("click", () => {
+    document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer"><i></i> <i class="fa-solid fa-xmark"></i></div>
+			<p title="titlemodal" class="gallery-photo"> Galerie photo</p>
+			<div class="gallery-modal swichGallery-modal"></div>
+			<div class="addPhotoForm"></div>
+			<hr/>
+			<input class="addPhoto" type="submit" value="Ajouter une photo">`;
 
-const closeModal = document.querySelector(".fa-xmark");
+    // Afficher les figures
+    fetch("http://localhost:5678/api/works")
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(item => showFigureModal(item));
+
+        const closeModal = document.querySelector(".fa-xmark");
+        closeModal.addEventListener("click", () => {
+          modal.style.visibility = "hidden"
+        });
+        const addPhotoButton = document.querySelector(".addPhoto");
+        addPhotoButton.addEventListener('click', switchModal);
+      });
+
+    const closeModal = document.querySelector(".fa-xmark");
+    closeModal.addEventListener("click", () => {
+      modal.style.visibility = "hidden"
+    });
+  });
+
+
+  const closeModal = document.querySelector(".fa-xmark");
   closeModal.addEventListener("click", () => {
-  modal.style.visibility = "hidden"
-});
-}
-const addPhotoButton = document.querySelector(".addPhoto");
-console.log(addPhotoButton);
-addPhotoButton.addEventListener('click',switchModal);
+    modal.style.visibility = "hidden"
+  });
 
+}
+
+const addPhotoButton = document.querySelector(".addPhoto");
+addPhotoButton.addEventListener('click', switchModal);
 
