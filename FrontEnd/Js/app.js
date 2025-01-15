@@ -160,9 +160,14 @@ const switchModal = function () {
                 <label for="title">Titre</label>
                 <input type="text" name="title" id="title" />
                 <label for="category">Catégorie</label>
-                <input type="category" name="category" id="category">
+                <select name="category" id="category">
+                  <option value="Objets">Objets</option>
+                  <option value="Appartements">Appartements</option>
+                  <option value="Hotels & restaurants">Hotels & restaurants</option>
+                </select>
               </form>
               <hr/>
+              
             <input type="submit" value="Valider">
             </div>
     </div>`
