@@ -48,7 +48,7 @@ function showFigure(data) {
 //recupérer mes categories dapuis API
 async function getCategories() { // creation de la fonction getcatégories
   const url = "http://localhost:5678/api/categories"; // lien vers mon API categories
-  try {
+  try { 
     const response = await fetch(url); // effectue une requete http get vers l'API
     if (!response.ok) { // vérifie si la repose est correct 
       throw new Error(`Reponse status: ${response.status}`); // lève l'erreur en cas de réponse non valide
@@ -99,7 +99,7 @@ function displayAddBanner() {
 
   // ajouter un eventlistener sur le logOut
   logOut.addEventListener("click", e => {
-    sessionStorage.clear();
+    sessionStorage.clear(); 
   })
 };
 displayAddBanner();
@@ -113,13 +113,13 @@ openModal.addEventListener("click", () => {
   addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener au bouton ajouter photo
 });
 // ajout eventlistener sur le bouton close
-function addEventListenercloseModal() {
+function addEventListenercloseModal () {
   const closeModal = document.querySelector(".fa-xmark");
   closeModal.addEventListener("click", () => {
     modal.style.visibility = "hidden"
   });
 }
-addEventListenercloseModal(); // ajout eventlistener sur le bouton close
+addEventListenercloseModal (); // ajout eventlistener sur le bouton close
 
 
 //afficher les figure modal
@@ -157,16 +157,15 @@ const showAddPhotoModal = function () {
     </div>
     <p title="titlemodal" class="gallery-photo">Ajout photo</p>
     <div class="center">
-    <div class="conditions">
-    <div class="blue">
+      <div class="blue">
         <div id="preview-container"></div>
         <i class="fa-regular fa-image"></i>
         <label for="plusPhoto" class="formFile">+ Ajouter photo</label>
         <input id="plusPhoto" type="file" accept="image/jpg, image/png">
         <p class="format">jpg, png : 4mo max</p>
       </div>
-        <div class="addPhotoForm">
-        <form action="#" method="post">
+      <div class="addPhotoForm">
+        <form class="valider" action="#" method="post">
           <label for="title">Titre</label>
           <input type="text" name="title" id="title" />
           <label for="category">Catégorie</label>
@@ -176,11 +175,10 @@ const showAddPhotoModal = function () {
             <option value="Hotels & restaurants">Hotels & restaurants</option>
           </select>
           <hr/>
-        </div>
-      </form>
-      <input type="submit" value="Valider" id="btnValider">
-    </div>
-    
+        <input type="submit" value="Valider" id="valider">
+        </form>
+        
+      </div>
     </div>
   `;
 
@@ -205,15 +203,16 @@ const showAddPhotoModal = function () {
         data.forEach(item => showFigureModal(item));
       });
 
-    addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener à un bouton ajouter photo
-    addEventListenercloseModal() // ajout eventlistener sur le bouton close
-
+      addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener à un bouton ajouter photo
+      addEventListenercloseModal () // ajout eventlistener sur le bouton close
+      
   });
 
-  // Gérer le changement de fisbhiers 
-  function handleFileChange(event) {
-    const file = event.target.files[0];
+  // Gérer la prévisualisation de la photo
 
+  document.getElementById("plusPhoto").addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    
     if (file && (file.type === 'image/jpeg' || file.type === 'image/png') && file.size <= 4 * 1024 * 1024) { // Vérification des conditions : type et taille
       const reader = new FileReader();
       reader.onload = function (e) {
@@ -221,10 +220,9 @@ const showAddPhotoModal = function () {
         const faImage = document.querySelector(".fa-image");
         const buttonAddPhotoPlus = document.querySelector(".formFile");
         const formatImage = document.querySelector(".format");
-
-        faImage.style.display = "none"; // Faire disparaître la fontawesome fa-image
-        buttonAddPhotoPlus.style.display = "none"; // Faire disparaître le bouton + Ajouter photo
-        formatImage.style.display = "none"; // Faire disparaître le texte qui indique le format du fichier
+        faImage.style.display = "none"; // faire disparaitre la fontawersome fa-image
+        buttonAddPhotoPlus.style.display = "none"; // faire disparaitre le bouton + Ajouter photo
+        formatImage.style.display = "none"; // faire disparaitre le texte qui indique le format du fichier
 
         // Effacer les anciennes prévisualisations
         previewContainer.innerHTML = '';
@@ -236,33 +234,16 @@ const showAddPhotoModal = function () {
         img.style.maxWidth = "126px"; // Ajuster la largeur maximale
         previewContainer.appendChild(img);
       };
-
+      
       // Lire le fichier en tant qu'URL base64
       reader.readAsDataURL(file);
     } else {
       alert('Format accepté : jpeg ou png, taille max 4Mo');
     }
-  }
+  });
+  addEventListenercloseModal (); // la fonction ajoute un eventlistener à un bouton
+};
 
-  function addEventListenerToFileInput() {
-    const fileInput = document.getElementById("plusPhoto");
-    if (fileInput) {
-      fileInput.addEventListener('change', handleFileChange);
-    }
-  }
-
-  function addEventListenerToAddPhotoButton() {
-    const addPhotoButton = document.querySelector(".addPhoto"); // on récupère le bouton
-    if (addPhotoButton) { // on vérifie l'existence du bouton
-      addPhotoButton.addEventListener('click', showAddPhotoModal); // au click, on appelle la fonction showAddPhotoModal
-    }
-  }
-  addEventListenercloseModal() // ajout eventlistener sur le bouton close
-  // Initialisation des événements
-  addEventListenerToFileInput();
-  addEventListenerToAddPhotoButton();
-  addEventListenercloseModal() // ajout eventlistener sur le bouton close
-}
 // la fonction ajoute un eventlistener à un bouton
 function addEventListenerToAddPhotoButton() {
   const addPhotoButton = document.querySelector(".addPhoto"); // on récupère le bouton
@@ -271,5 +252,39 @@ function addEventListenerToAddPhotoButton() {
   }
 }
 
+// ajoute un evenlistener sur le bouton valider 
 
+// 
+document.getElementById("#valider")
+    addEventListener("submit", addEventListenerButtonValider)
 
+    
+
+async function addEventListenerButtonValider(e) {
+  event.preventDefault();
+  console.log(file)
+
+    // let response = await fetch(loginApi, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    // body: JSON.stringify(user),
+    // });
+    // console.log(response); // quand la reponse est bonne on a un status de 200 sinon status 401
+
+    // // message d'erreur page logIn
+    // if (response.status != 200) {
+    //     const errorMessage =  document.createElement("div");
+    //     errorMessage.className = 'error';
+    //     errorMessage.innerHTML = 'Email ou Mot de passe incorrect';
+    //     document.querySelector('form').prepend(errorMessage); // créer un espace pour accueillir le message d'erreur 
+    // }
+    // else {
+    //     let result = await response.json();
+    //     const token = result.token;
+    //     sessionStorage.setItem("authToken", token);// Stock le token
+    //     window.location.href = ("index.html"); // redirige vers la parge d'accueil 
+    // }
+   
+}
