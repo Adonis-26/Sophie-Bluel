@@ -465,7 +465,7 @@ hr{
 
 .addPhotoForm textarea {
 	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
 }
 
 .addPhotoForm a{
@@ -479,9 +479,6 @@ hr{
 .addPhotoForm hr{
 	margin: 30px 0px 20px;
 }
-
-
-
 .addphotoPlus input{
 	margin-top: 0px;
 }
@@ -491,7 +488,7 @@ hr{
 	justify-content: center;
 	margin-left: 60px;
 	margin-right: 60px;
-	
+
 }
 
 .blue{
@@ -531,7 +528,6 @@ hr{
 .formFile{
 	display: inline-block;
   padding: 10px 20px;
-  background-color: #007BFF; /* Bleu */
   color: #fff; /* Texte blanc */
   border-radius: 5px; /* Coins arrondis */
   cursor: pointer;
@@ -539,3 +535,32 @@ hr{
   text-align: center;
   transition: background-color 0.3s ease;
 }
+
+#title{
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 16.42px;
+	text-align: left;
+	color: #444444;
+}
+
+#category{
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 16.42px;
+	text-align: left;
+	color: #444444;
+}
+
+/* Aperçu de l'image 
+.preview-container{
+	display: flex;
+	display: block;
+	height: 80%;
+	width: 50%;
+	background-color: #050506;
+
+}
+  

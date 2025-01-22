@@ -46,58 +46,58 @@ function showFigure(data) {
 //1.2 Réalisation du filtre des travaux : Ajout des filtres pour afficher les travaux par catégorie
 
 //recupérer mes categories dapuis API
-async function getCategories() {
-  const url = "http://localhost:5678/api/categories";
+async function getCategories() { // creation de la fonction getcatégories
+  const url = "http://localhost:5678/api/categories"; // lien vers mon API categories
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Reponse status: ${response.status}`);
+    const response = await fetch(url); // effectue une requete http get vers l'API
+    if (!response.ok) { // vérifie si la repose est correct 
+      throw new Error(`Reponse status: ${response.status}`); // lève l'erreur en cas de réponse non valide
     }
-    const json = await response.json();
-    for (let i = 0; i < json.length; i++) {
-      filterButton(json[i]);
+    const json = await response.json(); // conversion de la reponse ne JSON
+    for (let i = 0; i < json.length; i++) { // parcourir les catégories récupéres
+      filterButton(json[i]); // et appelle la fonction filterButton pour chaque catégorie
     }
   } catch (error) {
-    console.error(error.message);
+    console.error(error.message); // gérer les problèmes de connxion sur l'API
   }
 
 }
-getCategories();
+getCategories(); //j'appelle ma fonction getcategories
 
 // recuperer mes data sur l'api (noms de filtre)
-function filterButton(data) {
-  const div = document.createElement("div");// creation mes 4 boutons de filtre
-  div.className = data.id; // nom de class des filtres 
-  div.addEventListener("click", () => getWorks(data.id)); // je vois mes objets 1, 2, 3
-  div.innerHTML = `${data.name}`;
-  document.querySelector(".div-container").append(div);
+function filterButton(data) { // cration de la fonction filterButton à partir des données reçues
+  const div = document.createElement("div");// creation d'une DIV pour représenter mes boutons
+  div.className = data.id; // ajoute dela class qui correspond à l'identifiant du filtre (data.id)
+  div.addEventListener("click", () => getWorks(data.id)); // ajoute d'un eventlistener à ma fonction getworks avec l'id du filtre
+  div.innerHTML = `${data.name}`; // insere le filtre (data.name) dans le contenu html du bouton
+  document.querySelector(".div-container").append(div); // Ajoute du bouton créé dans un conteneur HTML existant avec la classe "div-container"
 }
-document.querySelector(".Tous").addEventListener("click", () => getWorks());
+document.querySelector(".Tous").addEventListener("click", () => getWorks()); // Ajout d'evenlistener pour le bouton ayant la classe "Tous"
 
-// permet d'afficher les éléments quand je suis logué 
+// permet d'afficher les éléments quand on se logue 
 function displayAddBanner() {
-  const aLink = document.querySelector(".js-modal");
-  const logOut = document.getElementById("logout");
-  if (sessionStorage.authToken) {
-    const editBanner = document.createElement('div');
-    editBanner.className = 'edit';
+  const aLink = document.querySelector(".js-modal"); //je déclare le lien aLink
+  const logOut = document.getElementById("logout");  // je déclare le logout
+  if (sessionStorage.authToken) { // si on t'authentifie correctement avec la clé token 
+    const editBanner = document.createElement('div'); // alors on créé une div
+    editBanner.className = 'edit'; // on ajoutre à cette div la class 'edit'
     //lien edit avec le modal
     editBanner.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>';
 
     document.body.prepend(editBanner);
     const hiddenFilter = document.querySelector(".div-container"); // div-container = bloc-filtre
     const logIn = document.getElementById("logIn");
-    logIn.style.display = "none";
-    logOut.style.visibility = "visible";
-    hiddenFilter.style.display = "none";
-    aLink.style.visibility = "visible";
+    logIn.style.display = "none"; // faire disparaitre le login
+    logOut.style.visibility = "visible"; // rendre visible le logout
+    hiddenFilter.style.display = "none"; // faire disparaitre les filtres
+    aLink.style.visibility = "visible";// rendre visible le aLink
   } else {
-    logIn.style.visibility = "visible";
-    logOut.style.display = "none";
-    aLink.style.visibility = "hidden";
+    logIn.style.visibility = "visible";// rendre visible
+    logOut.style.display = "none"; // faire disparaitre le logout
+    aLink.style.visibility = "hidden"; // masquer le aLink
   }
 
-  // retirer la token quand je click
+  // ajouter un eventlistener sur le logOut
   logOut.addEventListener("click", e => {
     sessionStorage.clear();
   })
@@ -110,12 +110,17 @@ modal.style.visibility = "hidden"
 const openModal = document.querySelector(".js-modal");
 openModal.addEventListener("click", () => {
   modal.style.visibility = "visible"
+  addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener au bouton ajouter photo
 });
-// fermer la modale
-const closeModal = document.querySelector(".fa-xmark");
-closeModal.addEventListener("click", () => {
-  modal.style.visibility = "hidden"
-});
+// ajout eventlistener sur le bouton close
+function addEventListenercloseModal() {
+  const closeModal = document.querySelector(".fa-xmark");
+  closeModal.addEventListener("click", () => {
+    modal.style.visibility = "hidden"
+  });
+}
+addEventListenercloseModal(); // ajout eventlistener sur le bouton close
+
 
 //afficher les figure modal
 function showFigureModal(data) {
@@ -132,7 +137,6 @@ function showFigureModal(data) {
 async function deleteWorks(event) {
   const token = sessionStorage.authToken;
   const id = event.srcElement.id;
-  console.log("id")
   const deleteApi = "http://localhost:5678/api/works/";
   let response = await fetch(deleteApi + id, {
     method: "DELETE",
@@ -144,74 +148,128 @@ async function deleteWorks(event) {
 };
 
 // ajouter une photo dans la modale
-const switchModal = function () {
-  document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer">
-<i class="fa-solid fa-arrow-left"></i><i class="fa-solid fa-xmark"></i></div>
-	<p title="titlemodal" class="gallery-photo"> Ajout photo</p>
-    <div class="center"> 
-      <div class="blue">
+const showAddPhotoModal = function () {
+  // Contenu de la modale
+  document.querySelector(".modal-wrapper").innerHTML = `
+    <div class="fermer">
+      <i class="fa-solid fa-arrow-left"></i>
+      <i class="fa-solid fa-xmark"></i>
+    </div>
+    <p title="titlemodal" class="gallery-photo">Ajout photo</p>
+    <div class="center">
+    <div class="conditions">
+    <div class="blue">
+        <div id="preview-container"></div>
         <i class="fa-regular fa-image"></i>
         <label for="plusPhoto" class="formFile">+ Ajouter photo</label>
-        <input id="plusPhoto" type="file" accept ".jpg, .png">
+        <input id="plusPhoto" type="file" accept="image/jpg, image/png">
         <p class="format">jpg, png : 4mo max</p>
       </div>
-              <div class="addPhotoForm">
-              <form action="#" method="post">
-                <label for="title">Titre</label>
-                <input type="text" name="title" id="title" />
-                <label for="category">Catégorie</label>
-                <select name="category" id="category">
-                  <option value="Objets">Objets</option>
-                  <option value="Appartements">Appartements</option>
-                  <option value="Hotels & restaurants">Hotels & restaurants</option>
-                </select>
-              </form>
-              <hr/>
-              
-            <input type="submit" value="Valider">
-            </div>
-    </div>`
+        <div class="addPhotoForm">
+        <form action="#" method="post">
+          <label for="title">Titre</label>
+          <input type="text" name="title" id="title" />
+          <label for="category">Catégorie</label>
+          <select name="category" id="category">
+            <option value="Objets">Objets</option>
+            <option value="Appartements">Appartements</option>
+            <option value="Hotels & restaurants">Hotels & restaurants</option>
+          </select>
+          <hr/>
+        </div>
+      </form>
+      <input type="submit" value="Valider" id="btnValider">
+    </div>
+    
+    </div>
+  `;
 
+  // Gérer le bouton de retour
   const backButton = document.querySelector(".fa-arrow-left");
-  const openModal = document.querySelector(".js-modal");
-  backButton.addEventListener("click", () => {
-    document.querySelector(".modal-wrapper").innerHTML = `<div class="fermer"><i></i> <i class="fa-solid fa-xmark"></i></div>
-			<p title="titlemodal" class="gallery-photo"> Galerie photo</p>
-			<div class="gallery-modal "></div>
-			<div class="addPhotoForm"></div>
-			<hr/>
-			<input class="addPhoto" type="submit" value="Ajouter une photo">`;
-
+  backButton.addEventListener("click", () => { // ajoute eventlistener sur le bouton backButton
+    // Logique pour revenir à la vue précédente
+    document.querySelector(".modal-wrapper").innerHTML = `
+      <div class="fermer">
+        <i></i> <i class="fa-solid fa-xmark"></i>
+      </div>
+      <p title="titlemodal" class="gallery-photo">Galerie photo</p>
+      <div class="gallery-modal"></div>
+      <div class="addPhotoForm"></div>
+      <hr/>
+      <input class="addPhoto" type="submit" value="Ajouter une photo">
+    `
     // Afficher les figures
     fetch("http://localhost:5678/api/works")
       .then(response => response.json())
       .then(data => {
         data.forEach(item => showFigureModal(item));
-        
-        const closeModal = document.querySelector(".fa-xmark");
-        closeModal.addEventListener("click", () => {
-          modal.style.visibility = "hidden"
-        });
-        // bouton ajoute photo
-        const addPhotoButton = document.querySelector(".addPhoto");
-        addPhotoButton.addEventListener('click', switchModal);
       });
-      
-    const closeModal = document.querySelector(".fa-xmark");
-    closeModal.addEventListener("click", () => {
-      modal.style.visibility = "hidden"
-    });
+
+    addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener à un bouton ajouter photo
+    addEventListenercloseModal() // ajout eventlistener sur le bouton close
+
   });
 
-  // fermer la 2ème modale 
-  const closeModal = document.querySelector(".fa-xmark");
-  closeModal.addEventListener("click", () => {
-  modal.style.visibility = "hidden"
-  
-  });
-  
+  // Gérer le changement de fisbhiers 
+  function handleFileChange(event) {
+    const file = event.target.files[0];
+
+    if (file && (file.type === 'image/jpeg' || file.type === 'image/png') && file.size <= 4 * 1024 * 1024) { // Vérification des conditions : type et taille
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const previewContainer = document.getElementById("preview-container");
+        const faImage = document.querySelector(".fa-image");
+        const buttonAddPhotoPlus = document.querySelector(".formFile");
+        const formatImage = document.querySelector(".format");
+
+        faImage.style.display = "none"; // Faire disparaître la fontawesome fa-image
+        buttonAddPhotoPlus.style.display = "none"; // Faire disparaître le bouton + Ajouter photo
+        formatImage.style.display = "none"; // Faire disparaître le texte qui indique le format du fichier
+
+        // Effacer les anciennes prévisualisations
+        previewContainer.innerHTML = '';
+
+        // Ajouter une nouvelle image
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = 'uploaded photo';
+        img.style.maxWidth = "126px"; // Ajuster la largeur maximale
+        previewContainer.appendChild(img);
+      };
+
+      // Lire le fichier en tant qu'URL base64
+      reader.readAsDataURL(file);
+    } else {
+      alert('Format accepté : jpeg ou png, taille max 4Mo');
+    }
+  }
+
+  function addEventListenerToFileInput() {
+    const fileInput = document.getElementById("plusPhoto");
+    if (fileInput) {
+      fileInput.addEventListener('change', handleFileChange);
+    }
+  }
+
+  function addEventListenerToAddPhotoButton() {
+    const addPhotoButton = document.querySelector(".addPhoto"); // on récupère le bouton
+    if (addPhotoButton) { // on vérifie l'existence du bouton
+      addPhotoButton.addEventListener('click', showAddPhotoModal); // au click, on appelle la fonction showAddPhotoModal
+    }
+  }
+  addEventListenercloseModal() // ajout eventlistener sur le bouton close
+  // Initialisation des événements
+  addEventListenerToFileInput();
+  addEventListenerToAddPhotoButton();
+  addEventListenercloseModal() // ajout eventlistener sur le bouton close
 }
-// bouton ajoute photo
-const addPhotoButton = document.querySelector(".addPhoto");
-addPhotoButton.addEventListener('click', switchModal);
+// la fonction ajoute un eventlistener à un bouton
+function addEventListenerToAddPhotoButton() {
+  const addPhotoButton = document.querySelector(".addPhoto"); // on récupère le bouton
+  if (addPhotoButton) { // on vérifie l'existance du bouton
+    addPhotoButton.addEventListener('click', showAddPhotoModal); // au click on appel la fonction showAddPhotoModal
+  }
+}
+
+
 
