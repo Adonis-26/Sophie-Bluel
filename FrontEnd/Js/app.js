@@ -263,16 +263,29 @@ addEventListener("submit", addEventListenerButtonValider)
 
 async function addEventListenerButtonValider(e) {
   event.preventDefault();
-  // Récupérer les données du formulaire
-  const title = document.getElementById("title").value;
-  const category = document.getElementById("category").value;
-  const fileInput = document.getElementById("plusPhoto");
-  const file = fileInput.files[0]; // Le fichier sélectionné
+ // Récupérer les données du formulaire
+ const title = document.getElementById("title").value;
+ const category = document.getElementById("category").value;
+ const fileInput = document.getElementById("plusPhoto");
+ const file = fileInput.files[0]; // Le fichier sélectionné
+
   console.log("#category :", category)
   console.log("#fileInput :", fileInput)
   console.log("#title :", title)
-  console.log("#category :", category)
-
+  console.log(file)
+  
+ // Vérification des champs
+ if (!title || !category || !file) {
+  // Vérifiez si un message d'erreur 
+  if (!document.querySelector('.error')) {
+    const errorMessage = document.createElement("div");
+    errorMessage.style.marginButtom = "200px";
+    errorMessage.className = "error";
+    errorMessage.innerHTML = "Remplir champs et ajouter une photo";
+    document.querySelector("form").prepend(errorMessage); // Ajouter le message d'erreur au début du formulaire
+  }
+  return;
+}
 
 
   // let response = await fetch(loginApi, {
@@ -282,14 +295,7 @@ async function addEventListenerButtonValider(e) {
   //     },
   // body: JSON.stringify(user),
   // });
-  // console.log(response); // quand la reponse est bonne on a un status de 200 sinon status 401
 
-  // // message d'erreur page logIn
-  // if (response.status != 200) {
-  //     const errorMessage =  document.createElement("div");
-  //     errorMessage.className = 'error';
-  //     errorMessage.innerHTML = 'Email ou Mot de passe incorrect';
-  //     document.querySelector('form').prepend(errorMessage); // créer un espace pour accueillir le message d'erreur 
   // }
   // else {
   //     let result = await response.json();

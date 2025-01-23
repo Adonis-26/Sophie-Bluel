@@ -22,10 +22,12 @@ async function entranceLogin(event) {
 
     // message d'erreur page logIn
     if (response.status != 200) {
-        const errorMessage =  document.createElement("div");
-        errorMessage.className = 'error';
-        errorMessage.innerHTML = 'Email ou Mot de passe incorrect';
-        document.querySelector('form').prepend(errorMessage); // créer un espace pour accueillir le message d'erreur 
+        if (!document.querySelector('.error')) {
+            const errorMessage = document.createElement("div");
+            errorMessage.className = 'error';
+            errorMessage.innerHTML = 'Email ou Mot de passe incorrect';
+            document.querySelector('form').prepend(errorMessage); // créer un espace pour accueillir le message d'erreur 
+        }
     }
     else {
         let result = await response.json();
