@@ -1,13 +1,12 @@
-//1.1 la galerie fonctionnelle affichée avec la liste des travaux provenant du back-end
+//===============recupérer les traveeaux depuis API============================
 
-//recupérer mon works dapuis API
 async function getWorks(filter) { 
   document.querySelector(".gallery").innerHTML = ""; // réinitialise la galerie en vidant son avant de la remplir 
   const url = "http://localhost:5678/api/works"; //url de l'API pour récupérer les travaux
   try {
     const response = await fetch(url); // effectue une requete GET vers l'API
     if (!response.ok) { // vérifie que la réponse est correcte (code 200)
-      throw new Error(`Reponse status: ${response.status}`); // lève une erreu si la reponse n'est pas correct
+      throw new Error(`Reponse status: ${response.status}`); // lève une erreur si la reponse n'est pas correct
     }
     const json = await response.json(); // convertis la reponse json en format objet JS
     if (filter) { // si le filtre est fourni
@@ -33,7 +32,8 @@ async function getWorks(filter) {
 }
 getWorks(); // appel de la fonction getworks pour récupérer et afficher les traveaux
 
-//afficher les figure
+//===================afficher les figure==========================
+
 function showFigure(data) {
   const figure = document.createElement("figure");
   figure.innerHTML = `<img src=${data.imageUrl} alt=${data.title}>
@@ -41,11 +41,9 @@ function showFigure(data) {
   //afficher la galerie 
   document.querySelector(".gallery").append(figure);
 }
-//=========================================================================================
 
-//1.2 Réalisation du filtre des travaux : Ajout des filtres pour afficher les travaux par catégorie
+//=============recupérer les categories dapuis API================
 
-//recupérer mes categories dapuis API
 async function getCategories() { // creation de la fonction getcatégories
   const url = "http://localhost:5678/api/categories"; // lien vers mon API categories
   try {
@@ -60,11 +58,11 @@ async function getCategories() { // creation de la fonction getcatégories
   } catch (error) {
     console.error(error.message); // gérer les problèmes de connexion sur l'API
   }
-
 }
 getCategories(); 
 
-// creation des bouttons qui permettent de filtrer les projets par catégorie
+//===========creation des bouttons qui permettent de filtrer les projets par catégorie==============
+
 function createFilterButtons(data) { 
   const div = document.createElement("div");// creation d'une DIV pour représenter mes boutons
   div.className = data.id; // ajout de la class qui correspond à l'identifiant du filtre (data.id)
@@ -74,7 +72,8 @@ function createFilterButtons(data) {
 }
 document.querySelector(".all-categories").addEventListener("click", () => getWorks()); // Ajout d'evenlistener pour le bouton ayant la classe "Tous"
 
-// permet de vérifier si user est connecté avant d'afficher le bon mode
+//========permet de vérifier si user est connecté avant d'afficher le bon mode=======================
+
 function checkAndSwitchToConnectedMode() {
   const aLink = document.querySelector(".js-modal"); 
   const logOut = document.getElementById("logout");  
@@ -104,6 +103,8 @@ function checkAndSwitchToConnectedMode() {
 };
 checkAndSwitchToConnectedMode(); // j'appelle la fonction qui vérifie que je suis bien connecté pour me déconnecter
 
+//============================================================
+
 const modal = document.querySelector('.modal')
 modal.style.visibility = "hidden"//masquer la modale
 const openModal = document.querySelector(".js-modal");
@@ -112,7 +113,8 @@ openModal.addEventListener("click", () => { // ajout d'un eventlistener pour d'o
   addEventListenerToAddPhotoButton(); // ajout un eventlistener au bouton pour ajouter photo
 });
 
-// fonction fermer la modale
+//===========fonction fermer la modale========================
+
 function addEventListenercloseModal() {// ajout eventlistener sur le bouton close
   const closeModal = document.querySelector(".fa-xmark");
   closeModal.addEventListener("click", () => { 
@@ -121,8 +123,8 @@ function addEventListenercloseModal() {// ajout eventlistener sur le bouton clos
 }
 addEventListenercloseModal(); // appel de l'eventlistener sur le bouton close pour fermer la modale 
 
+//=========afficher les figures modal==========================
 
-//afficher les figures modal
 function showFigureModal(data) {
   const figure = document.createElement("figure"); // creation d'un élément HTML 'figure' 
   figure.innerHTML = `<div class="image-container">
@@ -133,7 +135,8 @@ function showFigureModal(data) {
   document.querySelector(".gallery-modal").append(figure);// Sélectionne l'élément avec la classe "gallery-modal" dans le document html
 }
 
-// fonction supprimer les éléments
+//==========fonction supprimer les éléments=====================
+
 async function deleteWorks(event) {
   const token = sessionStorage.authToken; // récupère l'autentification de la token
   const id = event.srcElement.id; // récupère id de l'élément à supprimer à partir de l'élément déclenché 
@@ -147,7 +150,8 @@ async function deleteWorks(event) {
 
 };
 
-// ajouter une photo dans la modale
+//==========afficher & ajouter une photo dans la modale=====================
+
 const showAddPhotoModal = function () {
   // Contenu de la modale
   document.querySelector(".modal-wrapper").innerHTML = `
@@ -239,7 +243,8 @@ const showAddPhotoModal = function () {
   addEventListenercloseModal(); // la fonction ajoute un eventlistener à un bouton
 };
 
-// la fonction ajoute un eventlistener à un bouton
+//===========la fonction ajoute un eventlistener à un bouton======================
+
 function addEventListenerToAddPhotoButton() {
   const addPhotoButton = document.querySelector(".addPhoto"); // on récupère le bouton
   if (addPhotoButton) { // on vérifie l'existance du bouton
@@ -247,9 +252,12 @@ function addEventListenerToAddPhotoButton() {
   }
 }
 
-// ajoute un evenlistener sur le bouton valider 
+//==========selection du bouton ID "#valider" on attache un evènement submit===============
+
 document.getElementById("#valider")
 addEventListener("submit", addEventListenerButtonValider)
+
+//==========cette fonction est appelée lorsque le formulaire est soumis====================
 
 async function addEventListenerButtonValider(event) {
   event.preventDefault();
@@ -259,35 +267,31 @@ async function addEventListenerButtonValider(event) {
   const fileInput = document.getElementById("plusPhoto");
   const file = fileInput.files[0]; // Le fichier sélectionné
 
-  // Vérification des champs
-  if (!title || !category || !file) {
+  if (!title || !category || !file) {// Vérifie que tous les champs sont sélectionnés
     // Vérifiez si un message d'erreur 
-    if (!document.querySelector('.error')) {
-      const errorMessage = document.createElement("div");
-      errorMessage.className = "error";
-      errorMessage.innerHTML = "Remplir champs et ajouter une photo";
+    if (!document.querySelector(".error")) { // vérifie qu'aucun message d'erreur n'est déjà présent sur la page
+      const errorMessage = document.createElement("div");// crée un élément "div" pour afficher le message d'erreur
+      errorMessage.className = "error"; // attribue une class CSS "error" au message
+      errorMessage.innerHTML = "Ajouter une photo et remplissez les champs";// texte message d'erreur 
       document.querySelector("form").prepend(errorMessage); // Ajouter le message d'erreur au début du formulaire
     }
-    return;
+    return; // stop l'exécution si l'un des champs n'est pas sélectionné
   }
 
-   // Récupérer le token stocké
-   const token = sessionStorage.getItem("authToken");
+   const token = sessionStorage.getItem("authToken");// Récupérer le token stocké
   // Préparer les données pour l'envoi
-  const formData = new FormData();
+  const formData = new FormData();// Création d'un objet FormData
   formData.append("title", title);
   formData.append("category", category);
   formData.append("image", file); // Ajout du fichier
 
-  
   // Envoyer les données à l'API
-  const response = await fetch("http://localhost:5678/api/works", {
-    method: "POST",
+  const response = await fetch("http://localhost:5678/api/works", { 
+    method: "POST", // methode HTTP créer une nouvelle ressource
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`, // ajout d'un token d'autentification au headers
     },
-    body: formData,
+    body: formData, //corps de la requête contenant les données
   });
-
 
 }
