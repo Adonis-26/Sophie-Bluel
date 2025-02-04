@@ -1,7 +1,7 @@
-//===============recupérer les traveeaux depuis API============================
+//===============recupération des traveaux depuis API============================
 
-async function getWorks(filter) { 
-  document.querySelector(".gallery").innerHTML = ""; // réinitialise la galerie en vidant son avant de la remplir 
+async function getWorks(filter) {
+  document.querySelector(".gallery").innerHTML = ""; // réinitialise la galerie avant de la remplir 
   const url = "http://localhost:5678/api/works"; //url de l'API pour récupérer les travaux
   try {
     const response = await fetch(url); // effectue une requete GET vers l'API
@@ -38,13 +38,13 @@ function showFigure(data) {
   const figure = document.createElement("figure");
   figure.innerHTML = `<img src=${data.imageUrl} alt=${data.title}>
     <figcaption>${data.title}</figcaption>`;
-  //afficher la galerie 
-  document.querySelector(".gallery").append(figure);
+
+  document.querySelector(".gallery").append(figure);//ajout la liste de figure dans le DOM
 }
 
-//=============recupérer les categories dapuis API================
+//=============recupération des categories dapuis API================
 
-async function getCategories() { // creation de la fonction getcatégories
+async function createFilterButtons() { // creation de la fonction createFilterButtons pour tous les boutons
   const url = "http://localhost:5678/api/categories"; // lien vers mon API categories
   try {
     const response = await fetch(url); // effectue une requete http get vers l'API
@@ -53,17 +53,17 @@ async function getCategories() { // creation de la fonction getcatégories
     }
     const json = await response.json(); // conversion de la reponse ne JSON
     for (let i = 0; i < json.length; i++) { // parcourir les catégories récupéres
-      createFilterButtons(json[i]); // et appelle la fonction createFilterButtons pour chaque catégorie
+      createFilterButton(json[i]); // et appelle la fonction createFilterButtons pour chaque catégorie
     }
   } catch (error) {
     console.error(error.message); // gérer les problèmes de connexion sur l'API
   }
 }
-getCategories(); 
+createFilterButtons();
 
 //===========creation des bouttons qui permettent de filtrer les projets par catégorie==============
 
-function createFilterButtons(data) { 
+function createFilterButton(data) {
   const div = document.createElement("div");// creation d'une DIV pour représenter mes boutons
   div.className = data.id; // ajout de la class qui correspond à l'identifiant du filtre (data.id)
   div.addEventListener("click", () => getWorks(data.id)); // ajout d'un eventlistener au button 
@@ -75,16 +75,16 @@ document.querySelector(".all-categories").addEventListener("click", () => getWor
 //========permet de vérifier si user est connecté avant d'afficher le bon mode=======================
 
 function checkAndSwitchToConnectedMode() {
-  const aLink = document.querySelector(".js-modal"); 
-  const logOut = document.getElementById("logout");  
+  const aLink = document.querySelector(".js-modal");
+  const logOut = document.getElementById("logout");
   if (sessionStorage.authToken) { // si on a une token dans la session
     const editBanner = document.createElement('div'); // on crée une idv
     editBanner.className = "edit"; // dans cette div, on ajoute une class "edite"
     //bannière mode édition quand on est connecté
-    editBanner.innerHTML = `<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>`; 
+    editBanner.innerHTML = `<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>`;
 
     document.body.prepend(editBanner);// ajout de "editBanner" au debut document html
-    const hiddenFilter = document.querySelector(".div-container"); 
+    const hiddenFilter = document.querySelector(".div-container");
     const logIn = document.getElementById("logIn");
     logIn.style.display = "none"; // faire disparaitre le login quand on se connecte
     logOut.style.visibility = "visible"; // rendre visible le logout quand on se connecte
@@ -117,7 +117,7 @@ openModal.addEventListener("click", () => { // ajout d'un eventlistener pour d'o
 
 function addEventListenercloseModal() {// ajout eventlistener sur le bouton close
   const closeModal = document.querySelector(".fa-xmark");
-  closeModal.addEventListener("click", () => { 
+  closeModal.addEventListener("click", () => {
     modal.style.visibility = "hidden" // caché la modale quand on la ferme
   });
 }
@@ -131,7 +131,7 @@ function showFigureModal(data) {
 <img src="${data.imageUrl}" alt="${data.title}">
 <i id=${data.id} class="fa-solid fa-trash-can delete-icon" style="color: #f7f9fc;" title="Supprimer"></i>
 </div>`; // Ajout du contenu HTML à la figure avec une image et une icône de suppression
-  
+
   document.querySelector(".gallery-modal").append(figure);// Sélectionne l'élément avec la classe "gallery-modal" dans le document html
 }
 
@@ -143,11 +143,25 @@ async function deleteWorks(event) {
   const deleteApi = "http://localhost:5678/api/works/"; // récuprère l'url de l'API pour la supression
   let response = await fetch(deleteApi + id, { // envoie une requete DELETE à l'API pour supprimer les traveaux
     method: "DELETE", // methode HTTP DELETE pour demander la suppression 
-    headers: { // ajouter un heauder d'autorisation avec un token au format Bearer
+    headers: { // ajouter un header d'autorisation avec un token au format Bearer
       Authorization: "Bearer " + token,
     },
+    
   });
 
+  if (response.ok) {
+    document.querySelector(".modal-wrapper").innerHTML = `
+			<div class="fermer"><i></i> <i class="fa-solid fa-xmark"></i></div>
+			<p title="titlemodal" class="gallery-photo"> Galerie photo</p>
+			<div class="gallery-modal"></div>
+			<div class="addPhotoForm "></div>
+			<hr/>
+			<input class="addPhoto" type="submit" value="Ajouter une photo">
+		</div>` // création d'une modale 
+    getWorks();// raffraichir la galerie après la suppression 
+    addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener à un bouton ajouter photo
+    addEventListenercloseModal() // la fonction ajoute eventlistener sur le bouton close
+  }
 };
 
 //==========afficher & ajouter une photo dans la modale=====================
@@ -174,39 +188,41 @@ const showAddPhotoModal = function () {
           <input type="text" name="title" id="title" />
           <label for="category">Catégorie</label>
           <select name="category" id="category">
-            <option value="Objets">Objets</option>
-            <option value="Appartements">Appartements</option>
-            <option value="Hotels & restaurants">Hotels & restaurants</option>
+            <option value="">Sélectionnez une catégorie</option>
+            <option value="1">Objets</option>
+            <option value="2">Appartements</option>
+            <option value="3">Hôtels & restaurants</option>
           </select>
           <hr/>
-        <input type="submit" value="Valider" id="valider">
+          <input type="submit" value="Valider" id="valider">
         </form>
-        
       </div>
     </div>
   `;
+  document.querySelector(".valider").addEventListener("submit", addEventListenerButtonValider);
 
   // Gérer le bouton de retour
   const backButton = document.querySelector(".fa-arrow-left");
   backButton.addEventListener("click", () => { // ajoute eventlistener sur le bouton backButton
     // Logique pour revenir à la vue précédente
     document.querySelector(".modal-wrapper").innerHTML = `
-      <div class="fermer">
-        <i></i> <i class="fa-solid fa-xmark"></i>
-      </div>
-      <p title="titlemodal" class="gallery-photo">Galerie photo</p>
-      <div class="gallery-modal"></div>
-      <div class="addPhotoForm"></div>
-      <hr/>
-      <input class="addPhoto" type="submit" value="Ajouter une photo">
-    `
+			<div class="fermer"><i></i> <i class="fa-solid fa-xmark"></i></div>
+			<p title="titlemodal" class="gallery-photo"> Galerie photo</p>
+			<div class="gallery-modal"></div>
+			<div class="addPhotoForm "></div>
+			<hr/>
+			<input class="addPhoto" type="submit" value="Ajouter une photo">
+		</div>
+    `;
+  
     // Afficher les figures
-    fetch("http://localhost:5678/api/works") // effectue une requette get vers l'API
+    const url = "http://localhost:5678/api/works";
+    fetch(url) // effectue une requette get vers l'API
       .then(response => response.json()) // convertis la reponse de l'API en format json
       .then(data => { //parcourt les éléments récupérés dans la réponse
         data.forEach(item => showFigureModal(item));
       });
-
+    
     addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener à un bouton ajouter photo
     addEventListenercloseModal() // la fonction ajoute eventlistener sur le bouton close
   });
@@ -238,7 +254,7 @@ const showAddPhotoModal = function () {
 
       // Lire le fichier en tant qu'URL base64
       reader.readAsDataURL(file);
-    } 
+    }
   });
   addEventListenercloseModal(); // la fonction ajoute un eventlistener à un bouton
 };
@@ -252,10 +268,8 @@ function addEventListenerToAddPhotoButton() {
   }
 }
 
-//==========selection du bouton ID "#valider" on attache un evènement submit===============
 
-document.getElementById("#valider")
-addEventListener("submit", addEventListenerButtonValider)
+
 
 //==========cette fonction est appelée lorsque le formulaire est soumis====================
 
@@ -278,20 +292,21 @@ async function addEventListenerButtonValider(event) {
     return; // stop l'exécution si l'un des champs n'est pas sélectionné
   }
 
-   const token = sessionStorage.getItem("authToken");// Récupérer le token stocké
+  const token = sessionStorage.getItem("authToken");// Récupérer le token stocké
+  console.log("Token récupéré:", token);
   // Préparer les données pour l'envoi
   const formData = new FormData();// Création d'un objet FormData
   formData.append("title", title);
-  formData.append("category", category);
+  formData.append("category", parseInt(category, 3));
   formData.append("image", file); // Ajout du fichier
 
   // Envoyer les données à l'API
-  const response = await fetch("http://localhost:5678/api/works", { 
+  const response = await fetch("http://localhost:5678/api/works", {
     method: "POST", // methode HTTP créer une nouvelle ressource
     headers: {
-      Authorization: `Bearer ${token}`, // ajout d'un token d'autentification au headers
+      "Authorization": `Bearer ${token}`, // autorise l'autentification du token
+      "Accept": "application/json",
     },
-    body: formData, //corps de la requête contenant les données
+    body: formData,
   });
-
 }
