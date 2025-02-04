@@ -199,7 +199,7 @@ const showAddPhotoModal = function () {
       </div>
     </div>
   `;
-  document.querySelector(".valider").addEventListener("submit", addEventListenerButtonValider);
+  document.querySelector(".valider").addEventListener("submit", addEventListenerButtonValider); // Ajouter un event listener au formulaire
 
   // Gérer le bouton de retour
   const backButton = document.querySelector(".fa-arrow-left");
@@ -268,9 +268,6 @@ function addEventListenerToAddPhotoButton() {
   }
 }
 
-
-
-
 //==========cette fonction est appelée lorsque le formulaire est soumis====================
 
 async function addEventListenerButtonValider(event) {
@@ -309,4 +306,5 @@ async function addEventListenerButtonValider(event) {
     },
     body: formData,
   });
+  
 }
