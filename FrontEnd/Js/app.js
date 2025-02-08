@@ -30,7 +30,7 @@ async function getWorks(filter) {
     console.error(error.message);
   }
 }
-getWorks(); // appel de la fonction getworks pour récupérer et afficher les traveaux
+getWorks()// appel de la fonction getworks pour récupérer et afficher les traveaux
 
 //===================afficher les figure==========================
 
@@ -120,6 +120,7 @@ function addEventListenercloseModal() {// ajout eventlistener sur le bouton clos
   closeModal.addEventListener("click", () => {
     modal.style.visibility = "hidden" // caché la modale quand on la ferme
   });
+  
 }
 addEventListenercloseModal(); // appel de l'eventlistener sur le bouton close pour fermer la modale 
 
@@ -158,7 +159,7 @@ async function deleteWorks(event) {
 			<hr/>
 			<input class="addPhoto" type="submit" value="Ajouter une photo">
 		</div>` // création d'une modale 
-    getWorks();// raffraichir la galerie après la suppression 
+    getWorks();// raffraichir la galerie après la suppression
     addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener à un bouton ajouter photo
     addEventListenercloseModal() // la fonction ajoute eventlistener sur le bouton close
   }
@@ -199,8 +200,9 @@ const showAddPhotoModal = function () {
       </div>
     </div>
   `;
+  
   document.querySelector(".valider").addEventListener("submit", addEventListenerButtonValider); // Ajouter un event listener au formulaire
-
+ 
   // Gérer le bouton de retour
   const backButton = document.querySelector(".fa-arrow-left");
   backButton.addEventListener("click", () => { // ajoute eventlistener sur le bouton backButton
@@ -214,15 +216,7 @@ const showAddPhotoModal = function () {
 			<input class="addPhoto" type="submit" value="Ajouter une photo">
 		</div>
     `;
-  
-    // Afficher les figures
-    const url = "http://localhost:5678/api/works";
-    fetch(url) // effectue une requette get vers l'API
-      .then(response => response.json()) // convertis la reponse de l'API en format json
-      .then(data => { //parcourt les éléments récupérés dans la réponse
-        data.forEach(item => showFigureModal(item));
-      });
-    
+    getWorks();
     addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener à un bouton ajouter photo
     addEventListenercloseModal() // la fonction ajoute eventlistener sur le bouton close
   });
@@ -268,6 +262,7 @@ function addEventListenerToAddPhotoButton() {
   }
 }
 
+ 
 //==========cette fonction est appelée lorsque le formulaire est soumis====================
 
 async function addEventListenerButtonValider(event) {
@@ -283,14 +278,13 @@ async function addEventListenerButtonValider(event) {
     if (!document.querySelector(".error")) { // vérifie qu'aucun message d'erreur n'est déjà présent sur la page
       const errorMessage = document.createElement("div");// crée un élément "div" pour afficher le message d'erreur
       errorMessage.className = "error"; // attribue une class CSS "error" au message
-      errorMessage.innerHTML = "Ajouter une photo et remplissez les champs";// texte message d'erreur 
+      errorMessage.innerHTML = "Ajoutez une photo et remplissez les champs";// texte message d'erreur 
       document.querySelector("form").prepend(errorMessage); // Ajouter le message d'erreur au début du formulaire
     }
     return; // stop l'exécution si l'un des champs n'est pas sélectionné
   }
 
   const token = sessionStorage.getItem("authToken");// Récupérer le token stocké
-  console.log("Token récupéré:", token);
   // Préparer les données pour l'envoi
   const formData = new FormData();// Création d'un objet FormData
   formData.append("title", title);
@@ -306,5 +300,5 @@ async function addEventListenerButtonValider(event) {
     },
     body: formData,
   });
-  
+    // getWorks(); // Mettre à jour
 }
