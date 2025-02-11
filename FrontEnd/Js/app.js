@@ -302,20 +302,8 @@ async function addEventListenerButtonValider(event) {
 
   if (response.ok) {
     const newWork = await response.json();
-     // Réinitialiser la prévisualisation
-     const previewContainer = document.getElementById("preview-container");
-     previewContainer.innerHTML = ""; // Efface l'image prévisualisée
-     // Réafficher les éléments de l'UI masqués
-    document.querySelector(".fa-image").style.display = "block";
-    document.querySelector(".formFile").style.display = "block";
-    document.querySelector(".format").style.display = "block";
-
-    // Réinitialiser le formulaire
-    document.getElementById("title").value = "";
-    document.getElementById("category").value = "";
-    document.getElementById("plusPhoto").value = "";
-
-    showFigure(newWork);
-    showFigureModal(newWork);
+    showAddPhotoModal(); // permet d'afficher la page ajout photo vide
+    showFigure(newWork); // Ajoute immédiatement l'image dans la galerie
+    
   }
 }
