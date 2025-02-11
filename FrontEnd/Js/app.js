@@ -13,7 +13,7 @@ async function getWorks(filter) {
       const filtrer = json.filter((data) => data.categoryId === filter);// filtre les éléments par catégorie en fonction de l'ID du filtre
       for (let i = 0; i < filtrer.length; i++) { // boucle sur les éléments filtés pour les afficher dans la galerie et la modale
         showFigure(filtrer[i]); //affiche l'élément dans la galerie
-        showFigureModal(json[i]);//affiche l'élément dans la modale
+        showFigureModal(filtrer[i]);//affiche l'élément dans la modale
       }
     }
     else {
@@ -120,7 +120,6 @@ function addEventListenercloseModal() {// ajout eventlistener sur le bouton clos
   closeModal.addEventListener("click", () => {
     modal.style.visibility = "hidden" // caché la modale quand on la ferme
   });
-  
 }
 addEventListenercloseModal(); // appel de l'eventlistener sur le bouton close pour fermer la modale 
 
@@ -163,7 +162,7 @@ async function deleteWorks(event) {
     addEventListenerToAddPhotoButton(); // la fonction ajoute un eventlistener à un bouton ajouter photo
     addEventListenercloseModal() // la fonction ajoute eventlistener sur le bouton close
   }
-};
+}
 
 //==========afficher & ajouter une photo dans la modale=====================
 
@@ -288,7 +287,7 @@ async function addEventListenerButtonValider(event) {
   // Préparer les données pour l'envoi
   const formData = new FormData();// Création d'un objet FormData
   formData.append("title", title);
-  formData.append("category", parseInt(category, 3));
+  formData.append("category", parseInt(category));
   formData.append("image", file); // Ajout du fichier
 
   // Envoyer les données à l'API
@@ -300,5 +299,23 @@ async function addEventListenerButtonValider(event) {
     },
     body: formData,
   });
-    // getWorks(); // Mettre à jour
+
+  if (response.ok) {
+    const newWork = await response.json();
+     // Réinitialiser la prévisualisation
+     const previewContainer = document.getElementById("preview-container");
+     previewContainer.innerHTML = ""; // Efface l'image prévisualisée
+     // Réafficher les éléments de l'UI masqués
+    document.querySelector(".fa-image").style.display = "block";
+    document.querySelector(".formFile").style.display = "block";
+    document.querySelector(".format").style.display = "block";
+
+    // Réinitialiser le formulaire
+    document.getElementById("title").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("plusPhoto").value = "";
+
+    showFigure(newWork);
+    showFigureModal(newWork);
+  }
 }
