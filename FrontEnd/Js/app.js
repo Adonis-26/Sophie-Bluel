@@ -1,4 +1,4 @@
-//===============recupération des traveaux depuis API============================
+//===============recupération des travaux depuis API============================
 
 async function getWorks(filter) {
   document.querySelector(".gallery").innerHTML = ""; // réinitialise la galerie avant de la remplir 
@@ -34,8 +34,9 @@ getWorks()// appel de la fonction getworks pour récupérer et afficher les trav
 
 //===================afficher les figure==========================
 
-function showFigure(data) {
-  const figure = document.createElement("figure");
+function showFigure(data) { //la fonction qui créé et affiche une figure contenant une img et une legende
+  const figure = document.createElement("figure"); 
+  // Ajout du contenu HTML à l'élément "figure"
   figure.innerHTML = `<img src=${data.imageUrl} alt=${data.title}>
     <figcaption>${data.title}</figcaption>`;
 
@@ -61,7 +62,7 @@ async function createFilterButtons() { // creation de la fonction createFilterBu
 }
 createFilterButtons();
 
-//===========creation des bouttons qui permettent de filtrer les projets par catégorie==============
+//===========creation des boutons qui permettent de filtrer les projets par catégorie==============
 
 function createFilterButton(data) {
   const div = document.createElement("div");// creation d'une DIV pour représenter mes boutons
@@ -304,6 +305,6 @@ async function addEventListenerButtonValider(event) {
     const newWork = await response.json();
     showAddPhotoModal(); // permet d'afficher la page ajout photo vide
     showFigure(newWork); // Ajoute immédiatement l'image dans la galerie
-    
+    document.querySelector(".modal").style.display = "none"; // la modale se ferme 
   }
 }
