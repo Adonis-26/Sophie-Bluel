@@ -303,7 +303,6 @@ async function addEventListenerButtonValider(event) {
 
   if (response.ok) {
     const newWork = await response.json();
-    showAddPhotoModal(); // permet d'afficher la page ajout photo vide
     showFigure(newWork); // Ajoute immédiatement l'image dans la galerie
     document.querySelector(".modal").style.display = "none"; // la modale se ferme 
   }
